@@ -1,6 +1,5 @@
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { useState } from 'react'
-import ThemeToggle from './ThemeToggle'
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -29,6 +28,10 @@ function Navbar() {
     {
       label: 'About',
       path: '/about'
+    },
+    {
+      label: 'Settings',
+      path: '/settings'
     }
   ]
 
@@ -49,7 +52,7 @@ function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-6">
           <div className="h-20 flex items-center justify-between">
-            <Link
+            <NavLink
               to="/"
               className="
                 text-2xl
@@ -62,40 +65,41 @@ function Navbar() {
               "
             >
               CalorieTracker
-            </Link>
+            </NavLink>
 
             <nav className="hidden lg:flex items-center gap-8">
               {navLinks.map((link) => (
-                <Link
+                <NavLink
                   key={link.path}
                   to={link.path}
-                  className="
-                    relative
-                    text-slate-700
-                    dark:text-slate-200
-                    hover:text-primary
-                    transition-all
-                    duration-300
-                    after:absolute
-                    after:left-0
-                    after:-bottom-1
-                    after:w-0
-                    after:h-[2px]
-                    after:bg-primary
-                    after:transition-all
-                    after:duration-300
-                    hover:after:w-full
-                  "
+                  end={link.path === '/'}
+                  className={({ isActive }) => `
+    relative
+    px-1
+    py-2
+    transition-all
+    duration-300
+    after:absolute
+    after:left-0
+    after:-bottom-1
+    after:h-[2px]
+    after:bg-primary
+    after:transition-all
+    after:duration-300
+
+    ${isActive
+                      ? 'text-primary after:w-full'
+                      : 'text-slate-700 dark:text-slate-200 hover:text-primary after:w-0 hover:after:w-full'
+                    }
+  `}
                 >
                   {link.label}
-                </Link>
+                </NavLink>
               ))}
 
-              <ThemeToggle />
             </nav>
 
             <div className="lg:hidden flex items-center gap-4">
-              <ThemeToggle />
 
               <button
                 onClick={() =>
@@ -132,10 +136,9 @@ function Navbar() {
           lg:hidden
           transition-all
           duration-500
-          ${
-            isOpen
-              ? 'pointer-events-auto'
-              : 'pointer-events-none'
+          ${isOpen
+            ? 'pointer-events-auto'
+            : 'pointer-events-none'
           }
         `}
       >
@@ -150,10 +153,9 @@ function Navbar() {
             backdrop-blur-sm
             transition-opacity
             duration-500
-            ${
-              isOpen
-                ? 'opacity-100'
-                : 'opacity-0'
+            ${isOpen
+              ? 'opacity-100'
+              : 'opacity-0'
             }
           `}
         />
@@ -176,10 +178,9 @@ function Navbar() {
             duration-500
             flex
             flex-col
-            ${
-              isOpen
-                ? 'translate-x-0'
-                : 'translate-x-full'
+            ${isOpen
+              ? 'translate-x-0'
+              : 'translate-x-full'
             }
           `}
         >
@@ -206,25 +207,28 @@ function Navbar() {
 
           <nav className="flex flex-col gap-4">
             {navLinks.map((link) => (
-              <Link
+              <NavLink
                 key={link.path}
                 to={link.path}
+                end={link.path === '/'}
                 onClick={() =>
                   setIsOpen(false)
                 }
-                className="
-                  group
-                  glass-card
-                  p-5
-                  rounded-3xl
-                  flex
-                  items-center
-                  justify-between
-                  hover:-translate-y-1
-                  hover:shadow-xl
-                  transition-all
-                  duration-300
-                "
+                className={({ isActive }) => `
+  group
+  p-5
+  rounded-3xl
+  flex
+  items-center
+  justify-between
+  transition-all
+  duration-300
+
+  ${isActive
+                    ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-xl'
+                    : 'glass-card hover:-translate-y-1 hover:shadow-xl'
+                  }
+`}
               >
                 <span className="text-lg font-semibold">
                   {link.label}
@@ -232,16 +236,15 @@ function Navbar() {
 
                 <span
                   className="
-                    text-primary
-                    text-xl
-                    group-hover:translate-x-1
-                    transition-transform
-                    duration-300
-                  "
+  text-xl
+  transition-transform
+  duration-300
+  group-hover:translate-x-1
+"
                 >
-                  →
+                  ›
                 </span>
-              </Link>
+              </NavLink>
             ))}
           </nav>
 
